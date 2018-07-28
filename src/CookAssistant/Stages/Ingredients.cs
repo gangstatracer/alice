@@ -5,9 +5,9 @@ namespace CookAssistant.Stages
 {
     public class Ingredients : StageBase
     {
-        public override bool CanHandle(Stage stage) => stage == Stage.Indegrients;
-
-        public override string Act(State state, string keyword)
+        public override Stage Type => Stage.Indegrients;
+        
+        protected override string Act(State state, string keyword)
         {
             switch (keyword)
             {

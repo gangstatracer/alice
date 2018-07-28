@@ -1,4 +1,5 @@
-﻿using CookAssistant.Controllers;
+﻿using System.Linq;
+using CookAssistant.Controllers;
 using CookAssistant.Storage;
 
 namespace CookAssistant.Stages
@@ -12,9 +13,17 @@ namespace CookAssistant.Stages
             RecepiesStorage = new RecepiesStorage();
         }
 
-        public abstract bool CanHandle(Stage stage);
+        public abstract Stage Type { get; }
 
-        public abstract string Act(State state, string keyword);
+        public virtual bool CanHandle(Stage stage, string keyword)
+        {
+            return stage == Type && Keywords().Contains(keyword);
+        }
+
+        protected virtual string Act(State state, string keyword)
+        {
+            return "";
+        }
 
         public virtual Result Act(string keyword, State state)
         {

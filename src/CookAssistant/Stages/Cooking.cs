@@ -4,17 +4,20 @@ namespace CookAssistant.Stages
 {
     public class Cooking : StageBase
     {
-        public override bool CanHandle(Stage stage) => stage == Stage.Coocking;
+        public override Stage Type => Stage.Coocking;
 
-        public override string Act(State state, string keyword)
+        protected override string Act(State state, string keyword)
         {
             switch (keyword)
             {
-                case "что дальше":
+                case "повтори":
+                case "делаю":
+                    return RecepiesStorage.GetByName(state.ConfirmedDish).Todo[state.TodoStepNumber - 1].Description;
+                case "дальше":
                 case "сделал":
                 case "готово":
                 {
-                    var dish = RecepiesStorage.GetByName(state.Dish);
+                    var dish = RecepiesStorage.GetByName(state.ConfirmedDish);
                     var todoStepNumber = state.TodoStepNumber++;
                     if (todoStepNumber < dish.Todo.Length)
                         return dish.Todo[todoStepNumber].Description;
@@ -29,7 +32,7 @@ namespace CookAssistant.Stages
 
         public override string[] Keywords()
         {
-            return new[] {"что дальше", "сделал", "готово"};
+            return new[] {"дальше", "сделал", "готово", "повтори", "делаю"};
         }
     }
 }

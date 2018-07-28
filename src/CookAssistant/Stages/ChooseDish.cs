@@ -4,9 +4,9 @@ namespace CookAssistant.Stages
 {
     public class ChooseDish : StageBase
     {
-        public override bool CanHandle(Stage stage) => stage == Stage.ChooseDish;
+        public override Stage Type => Stage.ChooseDish;
 
-        public override string Act(State state, string keyword)
+        protected override string Act(State state, string keyword)
         {
             switch (keyword)
             {

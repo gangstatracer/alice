@@ -10,8 +10,11 @@ namespace CookAssistant.Controllers
     [ApiController]
     public class MainController : Controller
     {
-        private static readonly List<IStage> StagesHandlers =
-            new List<IStage>
+        private static readonly List<IStage> StagesHandlers;
+
+        static MainController()
+        {
+            StagesHandlers = new List<IStage>
             {
                 new Start(),
                 new ChooseDish(),
@@ -19,14 +22,14 @@ namespace CookAssistant.Controllers
                 new Cooking(),
                 new Finish(),
             };
-
-        private static readonly string[] Keywords = StagesHandlers.SelectMany(h => h.Keywords()).Distinct().ToArray();
+            StagesHandlers.Add(new DefaultHandler(StagesHandlers.ToArray()));
+        }
 
         [HttpPost]
         public JsonResult Post([FromBody] SkillRequest skillRequest)
         {
             var state = GetState(skillRequest.Session.User_id);
-            var keyword = GetKeyword(skillRequest.Request.Command);
+            var keyword = GetKeyword(state.Stage, skillRequest.Request.Command);
 
 
             Result result;
@@ -36,7 +39,7 @@ namespace CookAssistant.Controllers
             }
             else
             {
-                var handler = StagesHandlers.FirstOrDefault(h => h.CanHandle(state.Stage));
+                var handler = StagesHandlers.FirstOrDefault(h => h.CanHandle(state.Stage, keyword));
                 result = handler?.Act(keyword, state);
             }
 
@@ -65,12 +68,14 @@ namespace CookAssistant.Controllers
             });
         }
 
-        private static string GetKeyword(string command)
+        private static string GetKeyword(Stage stage, string command)
         {
+            var keywords = StagesHandlers.Where(x => x.Type == stage || x.Type == Stage.Unknown)
+                .SelectMany(x => x.Keywords());
             return command.Split(new[] {' ', '-', '-', '?'}, StringSplitOptions.RemoveEmptyEntries)
                        .Select(x => x.ToLower())
-                       .FirstOrDefault(x => Keywords.Contains(x))
-                   ?? "не понимаю";
+                       .FirstOrDefault(x => keywords.Contains(x))
+                   ?? "";
         }
     }
 }

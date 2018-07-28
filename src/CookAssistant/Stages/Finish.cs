@@ -4,9 +4,9 @@ namespace CookAssistant.Stages
 {
     public class Finish : StageBase
     {
-        public override bool CanHandle(Stage stage) => stage == Stage.Finish;
+        public override Stage Type => Stage.Finish;
 
-        public override string Act(State state, string keyword)
+        public override Result Act(string keyword, State state)
         {
             switch (keyword)
             {
@@ -18,10 +18,10 @@ namespace CookAssistant.Stages
                     state.Dish = null;
                     state.ConfirmedDish = null;
                     state.TodoStepNumber = 0;
-                    return "Это было классно!";
+                    return new Result("Это было классно!") {IsFinish = true};
                 }
                 default:
-                    return "не понимаю";
+                    return new Result("не понимаю");
             }
         }
 

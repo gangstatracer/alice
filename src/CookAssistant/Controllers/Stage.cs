@@ -7,5 +7,6 @@
         Indegrients,
         Coocking,
         Finish,
+        Unknown
     }
 }
