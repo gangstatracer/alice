@@ -19,6 +19,7 @@ namespace CookAssistant
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                //.UseKestrel(options => options.ListenAnyIP(8080))
                 .UseStartup<Startup>();
     }
 }
