@@ -15,5 +15,12 @@ namespace CookAssistant.Stages
         public abstract bool CanHandle(Stage stage);
 
         public abstract string Act(State state, string keyword);
+
+        public virtual Result Act(string keyword, State state)
+        {
+            return new Result(Act(state, keyword));
+        }
+
+        public abstract string[] Keywords();
     }
 }

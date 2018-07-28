@@ -1,4 +1,5 @@
-﻿using CookAssistant.Controllers;
+﻿using System.Linq;
+using CookAssistant.Controllers;
 
 namespace CookAssistant.Stages
 {
@@ -11,11 +12,14 @@ namespace CookAssistant.Stages
             switch (keyword)
             {
                 case "да":
+                case "поехали":
+                case "готовим":
                     state.Stage = Stage.Coocking;
                     state.ConfirmedDish = state.Dish;
-                    return $"Шаг для {state.Dish}";
+                    var todoStep = RecepiesStorage.GetByName(state.Dish).Todo.First().Description;
+                    state.TodoStepNumber = 1;
+                    return todoStep;
                 case "нет":
-                case "не хочу":
                     state.Stage = Stage.ChooseDish;
                     state.Dish = RecepiesStorage.GetRandom().Name;
                     state.ConfirmedDish = null;
@@ -23,6 +27,11 @@ namespace CookAssistant.Stages
                 default:
                     return "не понимаю";
             }
+        }
+
+        public override string[] Keywords()
+        {
+            return new[] {"да", "нет", "поехали", "готовим"};
         }
     }
 }

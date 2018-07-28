@@ -1,7 +1,14 @@
-﻿namespace CookAssistant.Controllers
+﻿using System.Collections.Concurrent;
+
+namespace CookAssistant.Controllers
 {
     public static class CookingState
     {
-        public static State CurrentState { get; set; }
+        static CookingState()
+        {
+            States =  new ConcurrentDictionary<string, State>();
+        }
+
+        public static ConcurrentDictionary<string, State> States { get; }
     }
 }

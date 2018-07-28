@@ -11,12 +11,18 @@ namespace CookAssistant.Stages
             switch (keyword)
             {
                 case "приготовить":
+                case "приготовим":
                     state.Stage = Stage.ChooseDish;
                     state.Dish = RecepiesStorage.GetRandom().Name;
                     return state.Dish;
                 default:
-                    return "не понимаю";
+                    return "Вы можете спросить меня что приготовить, я предложу какое-нибудь блюдо";
             }
+        }
+
+        public override string[] Keywords()
+        {
+            return new[] {"приготовить"};
         }
     }
 }

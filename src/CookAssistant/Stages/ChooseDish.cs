@@ -22,5 +22,10 @@ namespace CookAssistant.Stages
                     return "не понимаю";
             }
         }
+
+        public override string[] Keywords()
+        {
+            return new[] {"еще", "нет", "давай",};
+        }
     }
 }

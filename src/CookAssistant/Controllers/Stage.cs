@@ -6,5 +6,6 @@
         ChooseDish,
         Indegrients,
         Coocking,
+        Finish,
     }
 }

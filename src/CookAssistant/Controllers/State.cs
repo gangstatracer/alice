@@ -11,5 +11,7 @@
         {
             return $"Stage: {Stage:G}, блюдо: {Dish ?? "не выбранно"}";
         }
+
+        public int TodoStepNumber { get; set; }
     }
 }
